@@ -198,8 +198,8 @@ namespace Blade.Sugar.Utility
                 InitKeyType = InitKeyType.Attribute, //从实体特性中读取主键自增列信息
                 //SlaveConnectionConfigs = new List<SlaveConnectionConfig>()
                 //    {//从连接
-                //         new SlaveConnectionConfig() { HitRate=10, ConnectionString="Data Source=.;Initial Catalog=Blade.Admin.AntdVue1;Integrated Security=True;Pooling=true;" },
-                //         new SlaveConnectionConfig() { HitRate=30, ConnectionString="Data Source=.;Initial Catalog=Blade.Admin.AntdVue2;Integrated Security=True;Pooling=true;" }
+                //         new SlaveConnectionConfig() { HitRate=10, ConnectionString="Data Source=.;Initial Catalog=Blade.Admin1;Integrated Security=True;Pooling=true;" },
+                //         new SlaveConnectionConfig() { HitRate=30, ConnectionString="Data Source=.;Initial Catalog=Blade.Admin2;Integrated Security=True;Pooling=true;" }
                 //     },
                 AopEvents = new AopEvents
                 {

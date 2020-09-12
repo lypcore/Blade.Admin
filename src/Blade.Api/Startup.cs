@@ -62,7 +62,7 @@ namespace Blade.Api
                 {
                     document.Info.Version = "v1";
                     document.Info.Title = "Blade API";
-                    document.Info.Description = "Blade.Admin.AntdVue 接口文档";
+                    document.Info.Description = "Blade.Admin 接口文档";
                     document.Info.TermsOfService = "无";
                     document.Info.Contact = new OpenApiContact
                     {
