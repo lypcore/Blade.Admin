@@ -66,12 +66,12 @@
 import EditForm from './EditForm'
 
 const columns = [
-  { title: '描述', dataIndex: 'Des', width: '15%' },
+  { title: '描述', dataIndex: 'Des', width: '13%' },
   { title: '权重', dataIndex: 'HitRate', width: '5%' },
   { title: '连接字符串', dataIndex: 'ConnectionString', width: '52%' },
   { title: '启用', dataIndex: 'IsEnable', width: '4%' },
-  { title: '被链接次数', dataIndex: 'ConnectionTotal', width: '6%' },
-  { title: '数据库类型', dataIndex: 'DbType', width: '6%' },
+  { title: '链接次数', dataIndex: 'ConnectionTotal', width: '6%' },
+  { title: '数据库类型', dataIndex: 'DbType', width: '8%' },
   { title: '操作', dataIndex: 'action', scopedSlots: { customRender: 'action' } }
 ]
 
