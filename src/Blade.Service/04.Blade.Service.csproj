@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Blade.Service</RootNamespace>
+    <AssemblyName>Blade.Service</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Blade.Entity\02.Blade.Entity.csproj" />
+    <ProjectReference Include="..\Blade.IService\03.Blade.IService.csproj" />
+    <ProjectReference Include="..\Blade.Util\01.Blade.Util.csproj" />
+  </ItemGroup>
+
+</Project>
