@@ -19,7 +19,7 @@
           <a-input v-model="entity.ConnectionString" type="textarea" autocomplete="off" />
         </a-form-model-item>
         <a-form-model-item label="是否启用" prop="IsEnable">
-           <a-radio-group v-model="entity.IsEnable">
+          <a-radio-group v-model="entity.IsEnable">
             <a-radio :value="0">禁用</a-radio>
             <a-radio :value="1">启用</a-radio>
           </a-radio-group>
