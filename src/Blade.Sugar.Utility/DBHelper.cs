@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Blade.Entity.BaseManage;
 using SqlSugar;
 
 namespace Blade.Sugar.Utility
@@ -102,6 +103,49 @@ namespace Blade.Sugar.Utility
             await Task.Run(() => { MainConnString = mainconnst; });         
         }
 
+        public List<SlaveConnectionConfig> GetSlaveConnectionConfigs()
+        {
+            List<SlaveConnectionConfig> slaves = new List<SlaveConnectionConfig>();
+            var db = GetSlaveConnectionConfigsBySugarDB();
+            slaves = db.Queryable<BaseReadLibrary>()
+                       .Where(x => x.IsEnable == 1)
+                       .Select(s => new SlaveConnectionConfig
+                       {
+                           HitRate = s.HitRate,
+                           ConnectionString = s.ConnectionString
+                       }).ToList();
+            return slaves;
+        }
+
+        /// <summary>
+        /// 返回SqlSugar对象
+        /// </summary>
+        /// <param name="showSqlOnConsole">执行操作数据库时是否打印SQL到控制台</param>
+        /// <param name="initKeyType">Attribute   不受数据库限制通过实体特性读取，如果找不到主键什么的都改用Attribute方式老老实实给实体加特性
+        /// SystemTable  从数据库系统表查询，这种需要SA这种高权限账号，对纯MODEL有洁癖的用户适用</param>
+        /// <returns></returns>
+        public SqlSugarClient GetSlaveConnectionConfigsBySugarDB(bool showSqlOnConsole = true, InitKeyType initKeyType = InitKeyType.Attribute)
+        {
+            SqlSugarClient db = new SqlSugarClient(new ConnectionConfig()
+            {
+                ConnectionString = Connst,
+                DbType = DbHelperFactory.GetDbType(DbTypeStr),//设置数据库类型
+                IsAutoCloseConnection = true,//自动释放数据务，如果存在事务，在事务结束后释放
+                InitKeyType = InitKeyType.Attribute, //从实体特性中读取主键自增列信息
+                AopEvents = new AopEvents
+                {
+                    OnLogExecuting = (sql, p) =>
+                    {
+                        Console.WriteLine("--------------------------------");
+                        Console.WriteLine(sql);
+                        Console.WriteLine(string.Join(",", p?.Select(it => it.ParameterName + ":" + it.Value)));
+                        Console.WriteLine("--------------------------------");
+                    }
+                }
+            });
+            return db;
+        }
+
         /// <summary>
         /// 返回SqlSugar对象
         /// </summary>
@@ -117,7 +161,12 @@ namespace Blade.Sugar.Utility
                 DbType = DbHelperFactory.GetDbType(DbTypeStr),//设置数据库类型
                 IsAutoCloseConnection = true,//自动释放数据务，如果存在事务，在事务结束后释放
                 InitKeyType = InitKeyType.Attribute, //从实体特性中读取主键自增列信息
-                SlaveConnectionConfigs = null,//获取所有从库
+                SlaveConnectionConfigs = GetSlaveConnectionConfigs(),//获取所有从库
+                //SlaveConnectionConfigs = new List<SlaveConnectionConfig>
+                //{
+                //    new SlaveConnectionConfig{HitRate=10,ConnectionString="Data Source=.;Initial Catalog=Blade.Admin1;Integrated Security=True;Pooling=true;" },
+                //    new SlaveConnectionConfig{HitRate=10,ConnectionString="Data Source=.;Initial Catalog=Blade.Admin2;Integrated Security=True;Pooling=true;" },
+                //},
                 AopEvents = new AopEvents
                 {
                     OnLogExecuting = (sql, p) =>
@@ -132,5 +181,6 @@ namespace Blade.Sugar.Utility
             Console.WriteLine(db.Ado.Connection.ConnectionString);
             return db;
         }
+
     }
 }
