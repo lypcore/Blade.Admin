@@ -3,7 +3,7 @@ using Blade.Util;
 using System;
 using System.Threading.Tasks;
 
-namespace Blade.Service.BaseManage
+namespace Blade.IService.BaseManage
 {
     public interface IBaseUserLogService
     {

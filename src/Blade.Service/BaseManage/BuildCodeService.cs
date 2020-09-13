@@ -1,5 +1,5 @@
 ﻿using Blade.Entity.BaseManage;
-using Blade.Service.BaseManage;
+using Blade.IService.BaseManage;
 using Blade.Util;
 using EFCore.Sharding;
 using Microsoft.AspNetCore.Hosting;
@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Blade.Service.Service
+namespace Blade.Service.BaseManage
 {
     public class BuildCodeService : BaseService<BaseDbLink>, IBuildCodeService, ITransientDependency
     {

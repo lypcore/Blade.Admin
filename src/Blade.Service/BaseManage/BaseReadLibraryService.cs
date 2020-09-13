@@ -1,4 +1,5 @@
 ﻿using Blade.Entity.BaseManage;
+using Blade.IService.BaseManage;
 using Blade.Util;
 using EFCore.Sharding;
 using LinqKit;
@@ -18,6 +19,13 @@ namespace Blade.Service.BaseManage
         }
 
         #region 外部接口
+
+        public async Task<List<BaseReadLibrary>> GetAllDataListAsync()
+        {
+            var aa= await GetIQueryable().ToListAsync();
+            return aa;
+        }
+
 
         public async Task<PageResult<BaseReadLibrary>> GetDataListAsync(PageInput<ConditionDTO> input)
         {

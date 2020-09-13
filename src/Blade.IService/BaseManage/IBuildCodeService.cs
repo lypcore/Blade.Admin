@@ -2,7 +2,7 @@
 using Blade.Util;
 using System.Collections.Generic;
 
-namespace Blade.Service.BaseManage
+namespace Blade.IService.BaseManage
 {
     public interface IBuildCodeService
     {

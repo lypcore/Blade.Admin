@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using MySql.Data.MySqlClient;
+using System.Threading.Tasks;
 
 using SqlSugar;
 
@@ -12,11 +10,8 @@ namespace Blade.Sugar.Utility
     public class DBHelper
     {
         private bool useAffectedRows = false;
-        private bool isMaindb = false;
         private static string mainConnst = string.Empty;
         private static string dbTypeStr { get; set; }
-        private static readonly List<string> readList = new List<string>();
-        private static Random ra = new Random();
         private string Addconnst
         {
             get
@@ -42,9 +37,7 @@ namespace Blade.Sugar.Utility
         {
             get
             {
-                if (isMaindb)
-                    return ConcatPar(MainConnst, Addconnst);
-                return ConcatPar(ReadonlyConnst, Addconnst);
+                return ConcatPar(MainConnst, Addconnst);
             }
         }
         private string _mainConnst = string.Empty;
@@ -65,23 +58,6 @@ namespace Blade.Sugar.Utility
             }
         }
 
-        private string readonlyConnst = string.Empty;
-        /// <summary>
-        /// 获取或设置连接只读数据库的字符串
-        /// </summary>
-        public string ReadonlyConnst
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(readonlyConnst))
-                    return ConcatPar(ReadOnlyConnString, Addconnst);
-                return ConcatPar(readonlyConnst, Addconnst);
-            }
-            set
-            {
-                readonlyConnst = value;
-            }
-        }
         /// <summary>
         /// 获取或设置主数据库连接字符串（初始化必须设置）
         /// </summary>
@@ -116,69 +92,14 @@ namespace Blade.Sugar.Utility
         {
             dbTypeStr = dbType;
         }
+
         /// <summary>
-        /// 添加只读数据库连接字符串
-        /// </summary>
-        /// <param name="connst">只读数据库连接字符串</param>
-        /// <returns></returns>
-        public static int AddReadConnString(string connst)
-        {
-            if (string.IsNullOrWhiteSpace(connst))
-                throw new DBHelperException("不能把空字符串设置为只读库连接");
-            readList.Add(connst);
-            return readList.Count;
-        }
-        /// <summary>
-        /// 只读数据库连接字符串
-        /// </summary>
-        public static string ReadOnlyConnString
-        {
-            get
-            {
-                if (readList.Count == 0) //没有添加只读数据库连接字符串就用主数据库的
-                    return MainConnString;
-                string connst = readList[ra.Next(readList.Count)];
-                if (string.IsNullOrWhiteSpace(connst))
-                    throw new DBHelperException("只读连接字符串为空");
-                return connst;
-            }
-        }
-        /// <summary>
-        /// 重新配置连接字符串
+        /// 配置连接字符串
         /// </summary>
         /// <param name="mainconnst">主数据连接字符串</param>
-        /// <param name="readConnsts">只读数据库连接字符串数组</param>
-        /// <param name="cleanPoolConnect">是否重置时清除旧连接的连接池</param>
-        public async static void ReSetConnst(string mainconnst, string[] readConnsts = null, bool cleanPoolConnect = false)
+        public async static void ReSetConnst(string mainconnst)
         {
-            if (cleanPoolConnect)
-            {
-                if (!string.IsNullOrEmpty(mainConnst) && mainConnst != mainconnst)
-                    using (MySqlConnection conn = new MySqlConnection(mainConnst))
-                        await conn.ClearAllPoolsAsync();
-                if (readConnsts != null)
-                {
-                    List<string> tl = new List<string>();
-                    tl.AddRange(readConnsts);
-                    foreach (string connst in readList)
-                    {
-                        if (!tl.Contains(connst))
-                        {
-                            using (MySqlConnection conn = new MySqlConnection(connst))
-                                await conn.ClearAllPoolsAsync();
-                        }
-                    }
-                    tl.Clear();
-                    tl = null;
-                }
-            }
-            MainConnString = mainconnst;
-            if (readConnsts != null)
-            {
-                readList.Clear();
-                foreach (string connst in readConnsts)
-                    AddReadConnString(connst);
-            }
+            await Task.Run(() => { MainConnString = mainconnst; });         
         }
 
         /// <summary>
@@ -196,11 +117,7 @@ namespace Blade.Sugar.Utility
                 DbType = DbHelperFactory.GetDbType(DbTypeStr),//设置数据库类型
                 IsAutoCloseConnection = true,//自动释放数据务，如果存在事务，在事务结束后释放
                 InitKeyType = InitKeyType.Attribute, //从实体特性中读取主键自增列信息
-                //SlaveConnectionConfigs = new List<SlaveConnectionConfig>()
-                //    {//从连接
-                //         new SlaveConnectionConfig() { HitRate=10, ConnectionString="Data Source=.;Initial Catalog=Blade.Admin1;Integrated Security=True;Pooling=true;" },
-                //         new SlaveConnectionConfig() { HitRate=30, ConnectionString="Data Source=.;Initial Catalog=Blade.Admin2;Integrated Security=True;Pooling=true;" }
-                //     },
+                SlaveConnectionConfigs = null,//获取所有从库
                 AopEvents = new AopEvents
                 {
                     OnLogExecuting = (sql, p) =>

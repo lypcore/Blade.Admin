@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Blade.Entity.BaseManage;
 using Blade.IService;
-using Blade.Service.BaseManage;
+using Blade.IService.BaseManage;
 using Blade.Util;
 using EFCore.Sharding;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blade.Service.Service
+namespace Blade.Service.BaseManage
 {
     public class HomeService : BaseService<BaseUser>, IHomeService, ITransientDependency
     {

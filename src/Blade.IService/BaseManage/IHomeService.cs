@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace Blade.Service.BaseManage
+namespace Blade.IService.BaseManage
 {
     public interface IHomeService
     {

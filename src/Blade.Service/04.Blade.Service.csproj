@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Blade.Entity\02.Blade.Entity.csproj" />
     <ProjectReference Include="..\Blade.IService\03.Blade.IService.csproj" />
+    <ProjectReference Include="..\Blade.Sugar.Utility\11.Blade.Sugar.Utility.csproj" />
     <ProjectReference Include="..\Blade.Util\01.Blade.Util.csproj" />
   </ItemGroup>
 

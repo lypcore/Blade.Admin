@@ -1,5 +1,5 @@
 ﻿using Blade.Entity.BaseManage;
-using Blade.Service.BaseManage;
+using Blade.IService.BaseManage;
 using Blade.Util;
 using EFCore.Sharding;
 using LinqKit;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blade.Service.Service
+namespace Blade.Service.BaseManage
 {
     public class BaseDepartmentService : BaseService<BaseDepartment>, IBaseDepartmentService, ITransientDependency
     {

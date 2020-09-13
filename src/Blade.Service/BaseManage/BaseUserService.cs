@@ -12,10 +12,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Blade.Entity.BaseManage;
-using Blade.Service.BaseManage;
+using Blade.IService.BaseManage;
 using Coldairarrow.Util;
+using Blade.Sugar.Utility;
 
-namespace Blade.Service.Service
+namespace Blade.Service.BaseManage
 {
     public class BaseUserService : BaseService<BaseUser>, IBaseUserService, ITransientDependency
     {
@@ -40,7 +41,9 @@ namespace Blade.Service.Service
 
         public async Task<PageResult<BaseUserDTO>> GetDataListAsync(PageInput<BaseUsersInputDTO> input)
         {
-            Expression<Func<BaseUser, BaseDepartment, BaseUserDTO>> select = (a, b) => new BaseUserDTO
+            var dbs = db.GetSugarDB();
+            var aaa = dbs.Queryable<BaseUser>().ToList();
+            Expression <Func<BaseUser, BaseDepartment, BaseUserDTO>> select = (a, b) => new BaseUserDTO
             {
                 DepartmentName = b.Name
             };
@@ -148,7 +151,7 @@ namespace Blade.Service.Service
         #endregion
 
         #region 私有成员
-
+        private DBHelper db = new DBHelper();
         private async Task SetUserRoleAsync(string userId, List<string> roleIds)
         {
             roleIds = roleIds ?? new List<string>();

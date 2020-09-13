@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Blade.Service.BaseManage
+namespace Blade.IService.BaseManage
 {
     public interface IBaseActionService
     {

@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using Blade.Entity;
 using Blade.Entity.BaseManage;
-using Blade.Service.BaseManage;
+using Blade.IService.BaseManage;
 using Blade.Util;
 using Coldairarrow.Util;
 using EFCore.Sharding;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Blade.Service.Service
+namespace Blade.Service.BaseManage
 {
     public class BaseRoleService : BaseService<BaseRole>, IBaseRoleService, ITransientDependency
     {

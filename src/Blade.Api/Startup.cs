@@ -93,7 +93,8 @@ namespace Blade.Api
             string dbConnStr = config.GetSection("Database:BaseDb")["ConnectionString"];
             string dbType = config.GetSection("Database:BaseDb")["DatabaseType"];
             // 数据库配置
-            Sugar.Utility.DBHelper.ReSetConnst(dbConnStr, new string[] { dbConnStr });
+            //Sugar.Utility.DBHelper.ReSetConnst(dbConnStr, new string[] { dbConnStr });
+            Sugar.Utility.DBHelper.ReSetConnst(dbConnStr);
             Sugar.Utility.DBHelper.GetDbType(dbType);
         }
         private void ConfigHelperOnChanged(object sender, EventArgs e)

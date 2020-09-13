@@ -1,4 +1,4 @@
-﻿using Blade.Service.BaseManage;
+﻿using Blade.IService.BaseManage;
 using Blade.IService;
 using Blade.Util;
 using Microsoft.AspNetCore.Mvc.Filters;
