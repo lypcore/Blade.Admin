@@ -42,8 +42,9 @@ namespace Blade.Service.BaseManage
         public async Task<PageResult<BaseUserDTO>> GetDataListAsync(PageInput<BaseUsersInputDTO> input)
         {
             var dbs = db.GetSugarDB();
+            //var aaa = dbs.Deleteable<BaseUser>().Where(x=>x.UserName== "测试").ExecuteCommand();
             var aaa = dbs.Queryable<BaseUser>().ToList();
-            Expression <Func<BaseUser, BaseDepartment, BaseUserDTO>> select = (a, b) => new BaseUserDTO
+            Expression<Func<BaseUser, BaseDepartment, BaseUserDTO>> select = (a, b) => new BaseUserDTO
             {
                 DepartmentName = b.Name
             };
