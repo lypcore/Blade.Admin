@@ -30,6 +30,7 @@ namespace Blade.Entity.BaseManage
         /// <summary>
         /// 描述
         /// </summary>
+        [Required(ErrorMessage = "描述不能为空")]
         public String Des { get; set; }
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace Blade.Entity.BaseManage
         /// <summary>
         /// 连接字符串
         /// </summary>
+        [Required(ErrorMessage = "连接字符串不能为空")]
         public String ConnectionString { get; set; }
 
         /// <summary>

@@ -108,7 +108,7 @@ namespace Blade.Sugar.Utility
             List<SlaveConnectionConfig> slaves = new List<SlaveConnectionConfig>();
             var db = GetSlaveConnectionConfigsBySugarDB();
             slaves = db.Queryable<BaseReadLibrary>()
-                       .Where(x => x.IsEnable == 1&&x.DbType== DbTypeStr)
+                       .Where(x => x.IsEnable == 1 && x.DbType.ToLower() == DbTypeStr.ToLower())
                        .Select(s => new SlaveConnectionConfig
                        {
                            HitRate = s.HitRate,
