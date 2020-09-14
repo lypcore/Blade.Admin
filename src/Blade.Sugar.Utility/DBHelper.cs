@@ -108,7 +108,7 @@ namespace Blade.Sugar.Utility
             List<SlaveConnectionConfig> slaves = new List<SlaveConnectionConfig>();
             var db = GetSlaveConnectionConfigsBySugarDB();
             slaves = db.Queryable<BaseReadLibrary>()
-                       .Where(x => x.IsEnable == 1)
+                       .Where(x => x.IsEnable == 1&&x.DbType== DbTypeStr)
                        .Select(s => new SlaveConnectionConfig
                        {
                            HitRate = s.HitRate,
@@ -162,11 +162,6 @@ namespace Blade.Sugar.Utility
                 IsAutoCloseConnection = true,//自动释放数据务，如果存在事务，在事务结束后释放
                 InitKeyType = InitKeyType.Attribute, //从实体特性中读取主键自增列信息
                 SlaveConnectionConfigs = GetSlaveConnectionConfigs(),//获取所有从库
-                //SlaveConnectionConfigs = new List<SlaveConnectionConfig>
-                //{
-                //    new SlaveConnectionConfig{HitRate=10,ConnectionString="Data Source=.;Initial Catalog=Blade.Admin1;Integrated Security=True;Pooling=true;" },
-                //    new SlaveConnectionConfig{HitRate=10,ConnectionString="Data Source=.;Initial Catalog=Blade.Admin2;Integrated Security=True;Pooling=true;" },
-                //},
                 AopEvents = new AopEvents
                 {
                     OnLogExecuting = (sql, p) =>
