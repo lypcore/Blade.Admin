@@ -193,7 +193,7 @@ namespace Blade.Service
                         continue;
                     }
                     bool result = false;
-                    if (taskData.SimpleTriggerRepeatCount == null)
+                    if (taskData.SimpleTriggerRepeatCount == "-1")
                     {
                         string cronExpression = !string.IsNullOrEmpty(taskData.CronSecond) ? taskData.CronSecond : "*";
                         cronExpression += " " + (!string.IsNullOrEmpty(taskData.CronMinute) ? taskData.CronMinute : "*");
@@ -243,7 +243,7 @@ namespace Blade.Service
                         taskData.Message = "任务运行失败，请检查配置信息是否正确";
                     }
 
-                    db.Updateable(taskData).ExecuteCommand();
+                    db.Updateable(taskData).Where(x => x.Id == taskData.Id).ExecuteCommand();
                 }
                 QuartzHelper.StartAllJob();
             }

@@ -16,6 +16,10 @@ using NSwag;
 using Blade.Util;
 using Blade.Util.DI;
 using Blade.Service;
+using Quartz.Impl;
+using Quartz;
+using Blade.Service.QuartzManage;
+using Quartz.Spi;
 
 namespace Blade.Api
 {
@@ -32,6 +36,13 @@ namespace Blade.Api
         {
             services.AddFxServices();
             services.AddAutoMapper();
+            #region 注入 Quartz调度类
+            services.AddSingleton<QuartzStartup>();
+            services.AddTransient<QuartzTestJob>();
+            //注册ISchedulerFactory的实例。
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            services.AddSingleton<IJobFactory, IOCJobFactory>();
+            #endregion
             services.AddEFCoreSharding(config =>
             {
                 var dbOptions = Configuration.GetSection("Database:BaseDb").Get<DatabaseOptions>();
@@ -104,7 +115,7 @@ namespace Blade.Api
             LoadSettings(ConfigHelper.Configuration);
             logger.LogInformation("配置文件有修改被重新载入！");
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApplicationLifetime appLifetime)
         {
             //允许body重用
             app.Use(next => context =>
@@ -127,7 +138,19 @@ namespace Blade.Api
             app.UseOpenApi(); //添加swagger生成api文档（默认路由文档 /swagger/v1/swagger.json）
             app.UseSwaggerUi3();//添加Swagger UI到请求管道中(默认路由: /swagger).
             ConfigHelper.OnChanged += ConfigHelperOnChanged;
-            QuartzManager.Run();
+            //QuartzManager.Run();
+            //获取前面注入的Quartz调度类
+            var quartz = app.ApplicationServices.GetRequiredService<QuartzStartup>();
+            appLifetime.ApplicationStarted.Register(() =>
+            {
+                quartz.Start().Wait(); //网站启动完成执行
+            });
+
+            //appLifetime.ApplicationStopped.Register(() =>
+            //{
+            //    quartz.Stop();  //网站停止完成执行
+
+            //});
         }
     }
 }

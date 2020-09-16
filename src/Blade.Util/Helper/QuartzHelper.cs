@@ -2,6 +2,7 @@
 using Quartz.Impl;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blade.Util
 {
@@ -62,7 +63,8 @@ namespace Blade.Util
                     endRunTimeTemp = DateBuilder.NextGivenSecondDate(endRunTime, 1);
                 }
                 //首先创建一个作业调度池
-                IScheduler schedule = (IScheduler)scheduleFactory.GetScheduler();
+                Task<IScheduler> tsk = scheduleFactory.GetScheduler();
+                IScheduler schedule = tsk.Result;
                 //创建出来一个具体的作业
                 IJobDetail jobDetail = JobBuilder.Create(jobClassType).WithIdentity(jobName, jobGroup).Build();
                 if (param != null && param.Count > 0)
@@ -77,14 +79,16 @@ namespace Blade.Util
                                                         .StartAt(starRunTimeTemp)
                                                         .EndAt(endRunTimeTemp)
                                                         .WithIdentity(jobName, jobGroup)
-                                                        .WithCronSchedule(cronExpression)
+                                                        //.WithCronSchedule(cronExpression)
+                                                        .WithCronSchedule("5 * * 1/1 * ?")
                                                         .Build();
                 //加入作业调度池中
                 schedule.ScheduleJob(jobDetail, trigger);
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                var aa = e.Message.ToString();
                 return false;
             }
         }
@@ -125,7 +129,9 @@ namespace Blade.Util
                     endRunTimeTemp = DateBuilder.NextGivenSecondDate(endRunTime, 1);
                 }
                 //首先创建一个作业调度池
-                IScheduler schedule = (IScheduler)scheduleFactory.GetScheduler();
+                Task<IScheduler> tsk = scheduleFactory.GetScheduler();
+                IScheduler schedule = tsk.Result;
+
                 //创建出来一个具体的作业
                 IJobDetail jobDetail = JobBuilder.Create(jobClassType).WithIdentity(jobName, jobGroup).Build();
                 if (param != null && param.Count > 0)
