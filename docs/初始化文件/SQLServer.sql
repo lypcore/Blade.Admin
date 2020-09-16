@@ -12,7 +12,7 @@
  Target Server Version : 15002000
  File Encoding         : 65001
 
- Date: 12/09/2020 23:33:07
+ Date: 16/09/2020 23:50:42
 */
 
 
@@ -221,6 +221,18 @@ INSERT INTO [dbo].[BaseAction]  VALUES (N'1304804239708524545', N'2020-09-12 23:
 GO
 
 INSERT INTO [dbo].[BaseAction]  VALUES (N'1304804239708524546', N'2020-09-12 23:29:07.493', NULL, N'0', N'1304804237976276992', N'2', N'删', NULL, N'BaseReadLibrary.Delete', N'1', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[BaseAction]  VALUES (N'1305882999157428224', N'2020-09-15 22:55:43.790', N'Admin', N'0', N'1178957405992521728', N'1', N'定时任务', N'/BaseManage/BaseQuartzTask/List', NULL, N'1', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[BaseAction]  VALUES (N'1305883000965173248', N'2020-09-15 22:55:44.220', NULL, N'0', N'1305882999157428224', N'2', N'增', NULL, N'BaseQuartzTask.Add', N'1', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[BaseAction]  VALUES (N'1305883000965173249', N'2020-09-15 22:55:44.220', NULL, N'0', N'1305882999157428224', N'2', N'改', NULL, N'BaseQuartzTask.Edit', N'1', NULL, N'0')
+GO
+
+INSERT INTO [dbo].[BaseAction]  VALUES (N'1305883000965173250', N'2020-09-15 22:55:44.220', NULL, N'0', N'1305882999157428224', N'2', N'删', NULL, N'BaseQuartzTask.Delete', N'1', NULL, N'0')
 GO
 
 
@@ -491,7 +503,7 @@ GO
 -- ----------------------------
 -- Records of BaseDbLink
 -- ----------------------------
-INSERT INTO [dbo].[BaseDbLink]  VALUES (N'1183373232498020352', N'2019-10-13 21:25:39.000', N'Admin', N'0', N'BaseDb', N'Data Source=.;Initial Catalog=Colder.Admin.AntdVue;Integrated Security=True', N'SqlServer')
+INSERT INTO [dbo].[BaseDbLink]  VALUES (N'1183373232498020352', N'2019-10-13 21:25:39.000', N'Admin', N'0', N'BaseDb', N'Data Source=.;Initial Catalog=Blade.Admin;Integrated Security=True', N'SqlServer')
 GO
 
 
@@ -574,6 +586,197 @@ INSERT INTO [dbo].[BaseDepartment]  VALUES (N'1181175803631636480', N'2019-10-07
 GO
 
 INSERT INTO [dbo].[BaseDepartment]  VALUES (N'1181175865409540096', N'2019-10-07 19:54:06.000', NULL, N'0', N'海曙事业部', N'1181175685528424448')
+GO
+
+
+-- ----------------------------
+-- Table structure for BaseQuartzTask
+-- ----------------------------
+IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseQuartzTask]') AND type IN ('U'))
+	DROP TABLE [dbo].[BaseQuartzTask]
+GO
+
+CREATE TABLE [dbo].[BaseQuartzTask] (
+  [Id] varchar(50) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [CreateTime] datetime  NOT NULL,
+  [CreatorId] varchar(50) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [JobName] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [JobGroup] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [JobClassName] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [JobDescription] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [RunStatus] int  NOT NULL,
+  [Enabled] tinyint  NOT NULL,
+  [StarRunTime] datetime  NULL,
+  [EndRunTime] datetime  NULL,
+  [CronSecond] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [CronMinute] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [CronHour] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [CronDay] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [CronMonth] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [CronWeek] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [CronYear] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [Message] varchar(255) COLLATE Chinese_PRC_CI_AS  NOT NULL,
+  [SimpleTriggerRepeatCount] varchar(255) COLLATE Chinese_PRC_CI_AS  NULL,
+  [SimpleTriggerRepeatSeconds] varchar(255) COLLATE Chinese_PRC_CI_AS  NULL,
+  [ModifyTime] datetime  NULL
+)
+GO
+
+ALTER TABLE [dbo].[BaseQuartzTask] SET (LOCK_ESCALATION = TABLE)
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'主键',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'Id'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'创建时间',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CreateTime'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'创建者',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CreatorId'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'任务名称',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'JobName'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'任务所属分组',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'JobGroup'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'任务类名',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'JobClassName'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'任务描述',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'JobDescription'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'运行状态 0：未运行 10：运行中 20：暂停',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'RunStatus'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'0：禁用 1：启用',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'Enabled'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'开始运行时间',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'StarRunTime'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'运行结束时间',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'EndRunTime'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'秒',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CronSecond'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'分钟',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CronMinute'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'小时',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CronHour'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'日',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CronDay'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'月',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CronMonth'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'星期',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CronWeek'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'年',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'CronYear'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'执行信息',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'Message'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'重复执行次数',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'SimpleTriggerRepeatCount'
+GO
+
+EXEC sp_addextendedproperty
+'MS_Description', N'重复执行时间间隔',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseQuartzTask',
+'COLUMN', N'SimpleTriggerRepeatSeconds'
+GO
+
+
+-- ----------------------------
+-- Records of BaseQuartzTask
+-- ----------------------------
+INSERT INTO [dbo].[BaseQuartzTask]  VALUES (N'1305787381139378176', N'2020-09-15 16:35:46.677', N'Admin', N' 测试定时任务', N' 测试定时任务1', N'Blade.Service.QuartzManage.QuartzTestJob', N'1', N'10', N'1', N'2020-09-09 00:00:00.000', N'2020-09-18 21:00:02.000', N'5', N'0', N'0', N'1', N'1', N'1', N'2020', N'', N'-1', N'1', N'2020-09-16 23:47:08.817')
 GO
 
 
@@ -663,11 +866,20 @@ EXEC sp_addextendedproperty
 'COLUMN', N'DbType'
 GO
 
+EXEC sp_addextendedproperty
+'MS_Description', N'只读数据库表',
+'SCHEMA', N'dbo',
+'TABLE', N'BaseReadLibrary'
+GO
+
 
 -- ----------------------------
 -- Records of BaseReadLibrary
 -- ----------------------------
-INSERT INTO [dbo].[BaseReadLibrary]  VALUES (N'1304804971174170624', N'2020-09-12 23:32:01.890', N'Admin', N'从库1', N'10', N'Data Source=.;Initial Catalog=Blade.Admin1;Integrated Security=True;Pooling=true;', N'1', N'0', N'SqlServer')
+INSERT INTO [dbo].[BaseReadLibrary]  VALUES (N'1304804971174170624', N'2020-09-12 23:32:01.890', N'Admin', N'从库1', N'10', N'Data Source=.;Initial Catalog=Blade.Admin;Integrated Security=True;Pooling=true;', N'1', N'0', N'SqlServer')
+GO
+
+INSERT INTO [dbo].[BaseReadLibrary]  VALUES (N'1305507600820867072', N'2020-09-14 22:04:01.853', N'Admin', N'从库2', N'20', N'Data Source=.;Initial Catalog=Blade.Admin;Integrated Security=True;Pooling=true;', N'1', N'0', N'SqlServer')
 GO
 
 
@@ -868,6 +1080,15 @@ GO
 INSERT INTO [dbo].[BaseRoleAction]  VALUES (N'1188801984434540558', N'2019-10-28 20:57:34.620', NULL, N'0', N'1180819481383931904', N'1188801057778569218')
 GO
 
+INSERT INTO [dbo].[BaseRoleAction]  VALUES (N'1305012044734402560', N'2020-09-13 13:14:52.073', NULL, N'0', N'1251145272742907904', N'1193158266167758848')
+GO
+
+INSERT INTO [dbo].[BaseRoleAction]  VALUES (N'1305012044738596864', N'2020-09-13 13:14:52.073', NULL, N'0', N'1251145272742907904', N'1193158630615027712')
+GO
+
+INSERT INTO [dbo].[BaseRoleAction]  VALUES (N'1305012044738596865', N'2020-09-13 13:14:52.073', NULL, N'0', N'1251145272742907904', N'1193158780011941888')
+GO
+
 
 -- ----------------------------
 -- Table structure for BaseUser
@@ -1047,6 +1268,25 @@ GO
 
 
 -- ----------------------------
+-- Records of BaseUserLog
+-- ----------------------------
+INSERT INTO [dbo].[BaseUserLog]  VALUES (N'1304805376914362368', N'2020-09-12 23:33:38.627', N'Admin', N'超级管理员', N'部门管理', N'添加部门名:666')
+GO
+
+INSERT INTO [dbo].[BaseUserLog]  VALUES (N'1304808333571526656', N'2020-09-12 23:45:23.550', N'Admin', N'超级管理员', N'部门管理', N'删除部门名:666')
+GO
+
+INSERT INTO [dbo].[BaseUserLog]  VALUES (N'1305009973725499392', N'2020-09-13 13:06:38.307', N'Admin', N'超级管理员', N'系统用户管理', N'添加用户:测试一号')
+GO
+
+INSERT INTO [dbo].[BaseUserLog]  VALUES (N'1305011608048635904', N'2020-09-13 13:13:07.960', N'Admin', N'超级管理员', N'系统用户管理', N'修改用户:测试一号')
+GO
+
+INSERT INTO [dbo].[BaseUserLog]  VALUES (N'1305012044931534848', N'2020-09-13 13:14:52.120', N'Admin', N'超级管理员', N'系统角色管理', N'修改角色:部门管理员')
+GO
+
+
+-- ----------------------------
 -- Table structure for BaseUserRole
 -- ----------------------------
 IF EXISTS (SELECT * FROM sys.all_objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseUserRole]') AND type IN ('U'))
@@ -1142,6 +1382,9 @@ GO
 INSERT INTO [dbo].[BaseUserRole]  VALUES (N'1251518746514690048', N'2020-04-18 22:31:35.920', NULL, N'0', N'Admin', N'1251144116734005248')
 GO
 
+INSERT INTO [dbo].[BaseUserRole]  VALUES (N'1305011607763423232', N'2020-09-13 13:13:07.890', NULL, N'0', N'1305009972391710720', N'1251145272742907904')
+GO
+
 
 -- ----------------------------
 -- Primary Key structure for table BaseAction
@@ -1183,6 +1426,15 @@ GO
 -- Primary Key structure for table BaseDepartment
 -- ----------------------------
 ALTER TABLE [dbo].[BaseDepartment] ADD CONSTRAINT [PK__Base_Dep__3214EC07CF2BA38D] PRIMARY KEY CLUSTERED ([Id])
+WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
+ON [PRIMARY]
+GO
+
+
+-- ----------------------------
+-- Primary Key structure for table BaseQuartzTask
+-- ----------------------------
+ALTER TABLE [dbo].[BaseQuartzTask] ADD CONSTRAINT [PK__BaseQuar__3214EC077582ED35] PRIMARY KEY CLUSTERED ([Id])
 WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)  
 ON [PRIMARY]
 GO
