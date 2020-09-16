@@ -177,7 +177,7 @@ namespace Blade.Service
         public static void Run()
         {
             //LinBasic.Log.LogHelper.GetInstance.LogWithTime("Quartz定时任务服务已启动");
-
+            Console.WriteLine("Quartz定时任务服务已启动");
             var db = new DBHelper().GetSugarDB();
             List<BaseQuartzTask> taskList = db.Queryable<BaseQuartzTask>().Where(q => q.Enabled == true).ToList();
             if (taskList != null && taskList.Count > 0)
