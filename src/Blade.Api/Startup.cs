@@ -20,6 +20,7 @@ using Quartz.Impl;
 using Quartz;
 using Blade.Service.QuartzManage;
 using Quartz.Spi;
+using Microsoft.Extensions.Hosting;
 
 namespace Blade.Api
 {
@@ -37,8 +38,8 @@ namespace Blade.Api
             services.AddFxServices();
             services.AddAutoMapper();
             #region 注入 Quartz调度类
-            services.AddSingleton<QuartzStartup>();
-            services.AddTransient<QuartzTestJob>();
+            //services.AddSingleton<QuartzStartup>();
+            //services.AddTransient<QuartzTestJob>();
             //注册ISchedulerFactory的实例。
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
             services.AddSingleton<IJobFactory, IOCJobFactory>();
@@ -115,7 +116,7 @@ namespace Blade.Api
             LoadSettings(ConfigHelper.Configuration);
             logger.LogInformation("配置文件有修改被重新载入！");
         }
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApplicationLifetime appLifetime)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime appLifetime)
         {
             //允许body重用
             app.Use(next => context =>
@@ -146,11 +147,11 @@ namespace Blade.Api
                 quartz.Start().Wait(); //网站启动完成执行
             });
 
-            //appLifetime.ApplicationStopped.Register(() =>
-            //{
-            //    quartz.Stop();  //网站停止完成执行
+            appLifetime.ApplicationStopped.Register(() =>
+            {
+                quartz.Stop();  //网站停止完成执行
 
-            //});
+            });
         }
     }
 }

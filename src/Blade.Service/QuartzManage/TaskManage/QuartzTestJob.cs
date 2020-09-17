@@ -3,7 +3,7 @@ using Quartz;
 using System;
 using System.Threading.Tasks;
 
-namespace Blade.Service.QuartzManage
+namespace Blade.Service.QuartzManage.TaskManage
 {
     public class QuartzTestJob : IJob, ITransientDependency
     {
